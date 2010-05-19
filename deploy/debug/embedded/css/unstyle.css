@@ -1,0 +1,111 @@
+/* CSS file */
+
+global
+{
+	color: #000000;
+	cornerRadius:0;
+}
+
+Application{
+	background-color: #000000;	
+	background-alpha:0;
+}
+
+Accordion
+{
+	borderStyle: solid;
+	borderThickness: 1;
+	borderColor: #000000;
+	headerStyleName: accordionHeader;
+	backgroundColor: #FFFFFF;
+	themeColor: #D5D5D5;
+	cornerRadius:0;
+}
+
+Button
+{
+	themeColor: #D5D5D5;
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF;
+}
+
+Canvas
+{	
+	borderColor: #000000;
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF;
+}
+
+ComboBox
+{
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF;
+}
+
+DataGrid
+{
+	headerColors: #FFFFFF, #FFFFFF;
+	alternatingItemColors: #FFFFFF, #FFFFFF;
+	horizontalGridLines: true;
+	horizontalGridLineColor: #CCCCCC;
+	rollOverColor: #DDDDDD;
+	selectionColor: #BBBBBB;
+	verticalScrollBarStyleName: dataGridVerticalScrollBar;
+}
+
+DateChooser
+{
+	cornerRadius: 0;
+	headerColors: #FFFFFF, #FFFFFF;
+	selectionColor: #DFDFDF;
+	rollOverColor: #E6E6E6;
+}
+
+HScrollBar
+{
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF;
+	trackColors: #FFFFFF, #FFFFFF;
+	thumbOffset: 1;
+}
+
+NewsItemRenderer{
+	leading:0;
+}
+
+NumericStepper
+{
+	borderThickness: 1;
+	cornerRadius: 0;
+	borderStyle: inset;
+}
+
+VScrollBar
+{
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF;
+	trackColors: #FFFFFF, #FFFFFF;
+	thumbOffset: 1;
+}
+
+.accordionHeader
+{
+	borderColor: #000000;
+	cornerRadius: 0;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF;
+}
+
+.dataGridVerticalScrollBar
+{
+	cornerRadius: 0;
+	thumbOffset: 1;
+	trackColors: #FFFFFF, #FFFFFF;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF;
+}

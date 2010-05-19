@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	name="3D Effects For Flex 3 Build File"
+	basedir="."
+	default="echoprojectdetails">
+
+	<!-- File Description -->
+	<description>Build Scripts for '3D Effects For Flex 3' Library and its visual Test Harness</description>
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Imports                           							                                                               -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	
+	<!-- Properties -->
+	<!-- Important - Import your custom properties before the default imports -->
+	<property file="./build/ant/properties/build.properties" />
+	<property file="./build/ant/elephant/properties/setup.properties"/>
+	<property file="./build/ant/elephant/properties/applications.properties"/>
+	<property file="./build/ant/elephant/properties/libraries.properties"/>
+	<property file="./build/ant/elephant/properties/flex.properties"/>
+	<property file="./build/ant/elephant/properties/project-setup.properties"/>
+	<property file="./build/ant/elephant/properties/project-details.properties"/>
+	<property file="./build/ant/elephant/properties/build-setup.properties"/>
+	<property file="./build/ant/elephant/properties/html-wrapper.properties"/>
+	<property file="./build/ant/elephant/properties/asdocs.properties"/>
+	<property file="./build/ant/elephant/properties/compc.properties"/>
+	<property file="./build/ant/elephant/properties/swf.properties"/>
+	
+	<!-- Macrodefs -->
+	<import file="./build/ant/elephant/macros/echoProjectDetails.xml"/>
+	<import file="./build/ant/elephant/macros/asdocs.xml"/>
+	<import file="./build/ant/elephant/macros/runhtml.xml"/>
+	<import file="./build/ant/elephant/macros/compc.xml"/>
+	<import file="./build/ant/elephant/macros/mxmlc.xml"/>
+	<import file="./build/ant/elephant/macros/wrapper.xml"/>
+	<import file="./build/ant/elephant/macros/mkdiroverwrite.xml"/>
+	<import file="./build/ant/elephant/macros/makeandcopyto.xml"/>
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Taskdefs                           							                                                               -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+		
+	<!-- Ant Contrib -->
+	<!--<taskdef
+		resource="net/sf/antcontrib/antcontrib.properties"
+	  	classpath="${ant-contrib.jar}"/>-->
+    	
+    <!-- FlexTasks -->
+    <!--<taskdef
+    	resource="flexTasks.tasks"
+		classpath="${flex.sdk.flextasks.jar}"/>-->
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Setup                           							                                                               -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	
+	<!-- Set up prefix for accessing Environmental Variables -->
+	<property environment="env"/>
+    
+    <!-- Setup a timestamp -->
+    <tstamp>
+        <format
+        	property="project.timestamp"
+			pattern="${setup.timestamp.pattern}" />
+    </tstamp>
+	
+	<!-- Setup a build number (Using the build.number file to store and increment it) -->
+    <buildnumber
+    	id="project.build.number"
+    	file="${build.dir}/build.number"/>
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Main Targets                           							                                                           -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ 	<target
+    	name="dist"
+    	depends="compc,
+ 				 asdocs,
+    			 copytodist"/>
+ 		
+	<target
+    	name="test"
+    	depends="(test)copyassets,
+				 (test)wrapper,
+				 (test)mxmlc,
+				 (test)runhtml"/>
+
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Config Targets                           							                                                           -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	
+	<target
+		name="(test)loadpaths">
+		<property
+	    	file="./build/ant/properties/test.properties"
+	    	description="Properities for test build" />
+	</target>
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Project Specific Targets                           							                                               -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	
+	 <target
+    	name="(test)copyassets"
+	 	depends="(test)loadpaths">
+	 	<fileset
+	 		id="assets.runtime.dir"
+	 		dir="${assets.runtime.dir}"/>
+        <makeandcopyto
+    		output.dir="${(output)wrapper.assets.runtime.dir}">
+        	<copydirs>
+        		<fileset refid="assets.runtime.dir"/>
+        	</copydirs>
+        </makeandcopyto>
+    </target>
+	
+	<target
+		name="(test)wrapper"
+		description="Builds an HTML wrapper for Test SWF"
+		depends="(test)loadpaths, wrapper"/>
+	
+	<target
+		name="(test)mxmlc"
+		description="Compiles Test SWF"
+		depends="(test)loadpaths, mxmlc"/>
+	
+	<target
+		name="(test)runhtml"
+		description="Compiles Test SWF"
+		depends="(test)loadpaths, runhtml"/>
+	
+	<target name="usage">
+	    <echo message="---------------------------------------------------------------"/>
+	    <echo message="3D Effects For Flex 3"/>
+	    <echo message="---------------------------------------------------------------"/>
+	    <echo message=""/>
+	    <echo message="Main Targets:"/>
+	    <echo message=""/>
+	    <echo message="test          --&gt; Compiles and runs the visual test harness"/>
+	    <echo message="dist          --&gt; Compiles the swc, generates documentation and creates the distribution"/>
+		<echo message=""/>
+	    <echo message="Secondary Targets:"/>
+	    <echo message=""/>
+		<echo message="zipdist       --&gt; Zips the distribution"/>
+		<echo message="copytodist    --&gt; Copies all necessary files to the distribution"/>
+	    <echo message="clean         --&gt; Deletes distribution and test harness deploy"/>
+	    
+	    <echo message=""/>
+	  </target>
+	
+	<target
+		name="copytodist"
+		depends="(test)loadpaths">
+		<echo>[copytodist] Copying Resources To Distribution Directory...</echo>
+       	<mkdiroverwrite
+			dir="${(output)dist.dir}"/>
+		<!-- Copy Binaries -->
+        <copy
+        	todir="${(output)dist.bin.dir}"
+        	includeemptydirs="true"
+        	overwrite="true">
+            <fileset 
+            	dir="${bin.dir}">
+            	<patternset>
+            		<include name="**/*.swc"/>
+            	</patternset>
+            </fileset>
+        </copy>
+		<!-- Copy Docs -->
+		<copy
+        	todir="${(output)dist.docs.dir}"
+        	includeemptydirs="true"
+        	overwrite="true">
+			<fileset 
+				dir="${asdocs.dir}"/>
+        </copy>
+		<!-- Copy Source -->
+		<copy
+        	todir="${(output)dist.src.dir}"
+        	includeemptydirs="true"
+        	overwrite="true">
+			<fileset
+				dir="${src.dir}"/>
+        </copy>
+		<!-- Copy Test Harness -->
+		<copy
+        	todir="${(output)dist.test.deploy.dir}"
+        	includeemptydirs="true"
+        	overwrite="true">
+			<fileset
+				dir="${(output)wrapper.dir}"/>
+        </copy>
+		<!-- Copy Test Source -->
+		<copy
+        	todir="${(output)dist.test.src.dir}"
+        	includeemptydirs="true"
+        	overwrite="true">
+			<fileset
+				dir="${test.dir}"/>
+        </copy>
+	
+	   <echo>[copytodist] Copyied Resources To Distribution Directory...</echo>
+	</target>
+	
+	<target
+		name="zipdist">
+		<zip 
+	    	destfile="${(output)dist.zip}"
+	    	whenempty="fail">
+	    	<fileset
+	    		dir="${(output)dist.dir}"/>
+	    </zip>
+	</target>
+	
+	<target
+		name="clean">
+		<delete
+			dir="${bin.dir}"/>
+		<delete
+			dir="${(output)dist.dir}"/>
+		<delete
+			dir="${deploy.dir}"/>
+	</target>
+	
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--  Generic Targets                           							                                                       -->
+	<!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	
+	<target
+		name="echoprojectdetails">
+		<echoprojectdetails
+			project.name="${project.name.full}"
+			project.version="${project.version.full}"
+			project.timestamp="${project.timestamp}"
+			project.build.number="${project.build.number}"
+			project.year="${project.year}"
+			project.owner="${project.owner}"
+			project.author="${project.author}"
+			project.author.email="${project.author.email}"
+			project.author.URL="${project.author.URL}" />
+	</target>
+	
+	<target
+		name="asdocs"
+		description="Create Project Documentation">
+		<asdocs
+			asdocs.executable="${flex.sdk.asdocs}"
+			config.xml="${flex.sdk.config.xml}"
+			asdocs.output.dir="${asdocs.dir}"
+			asdocs.footer="${asdocs.footer}"
+			asdocs.main.title="${asdocs.main.title}"
+			asdocs.window.title="${asdocs.window.title}"/>
+	</target>
+	
+	<target
+		name="compc">
+		<compc
+			output.name="${output.name}"
+			src.dir="${src.dir}"
+			player.version.full="${player.version.full}"
+			project.version.full="${project.version.full}" />
+	</target>
+	
+	<target
+		name="mxmlc">
+		<!-- Src paths -->
+		<path
+			id="srcdirs">
+			<pathelement location="${src.dir}"/>
+			<pathelement location="${test.dir}"/>
+			<pathelement location="${assets.dir}"/>
+		</path>
+		<property
+			name="src.dirs"
+			refid="srcdirs"/>
+		<!-- Lib paths -->
+		<path
+			id="libsdirs">
+			<pathelement location="${libs.dir}"/>
+		</path>
+		<property
+			name="libs.dirs"
+			refid="libsdirs"/>
+		<mxmlc
+			application.mxml="${basedir}/test/${project.application.name}.mxml"
+			output.swf="${(output)swf}"
+			player.version.full="${player.version.full}"
+			swf.framerate="${swf.framerate}"
+			swf.debug="${swf.debug}"
+			swf.width="${swf.width}"
+			swf.height="${swf.height}"
+			src.dirs="${src.dirs}"
+			libs.dirs="${libs.dirs}"/>
+	</target>
+	
+	<target name="wrapper">
+			<wrapper
+				swf.width="${swf.width}"
+				swf.height="${swf.height}"
+				wrapper.title="${project.name.full}"
+				wrapper.express-install.name="${wrapper.express-install.name}"
+				wrapper.swf.background-color="${wrapper.swf.background-color}"
+				wrapper.player.version="${player.version.full}"
+				output.wrapper.dir="${(output)wrapper.dir}"
+				output.wrapper.html="${(output)wrapper.html}"
+				output.swf.name="${(output)swf.name}"
+				wrapper.template.dir="${wrapper.template.dir}"
+				wrapper.template.html="${wrapper.template.html}"
+				wrapper.embed-params.allowfullscreen="${wrapper.embed-params.allowfullscreen}"
+				wrapper.embed-params.allownetworking="${wrapper.embed-params.allownetworking}"
+				wrapper.embed-params.allowscriptaccess="${wrapper.embed-params.allowscriptaccess}"
+				wrapper.embed-params.basedir="${wrapper.embed-params.basedir}"
+				wrapper.embed-params.bgcolor="${wrapper.embed-params.bgcolor}"
+				wrapper.embed-params.devicefont="${wrapper.embed-params.devicefont}"
+				wrapper.embed-params.menu="${wrapper.embed-params.menu}"
+				wrapper.embed-params.play="${wrapper.embed-params.play}"
+				wrapper.embed-params.quality="${wrapper.embed-params.quality}"
+				wrapper.embed-params.salign="${wrapper.embed-params.salign}"
+				wrapper.embed-params.scale="${wrapper.embed-params.scale}"
+				wrapper.embed-params.seamless-tabbing="${wrapper.embed-params.seamless-tabbing}"
+				wrapper.embed-params.sw-live-connect="${wrapper.embed-params.sw-live-connect}"
+				wrapper.embed-params.wmode="${wrapper.embed-params.wmode}"
+				wrapper.attributes.style-class="${wrapper.attributes.style-class}"
+				wrapper.attributes.align="${wrapper.attributes.align}" />
+		</target>	
+	
+	<target
+		name="runhtml">
+		<runhtml
+			url="${(output)wrapper.url}"/>
+	</target>
+	
+</project>

@@ -1,0 +1,17 @@
+<project>
+
+	<!-- Default Properties -->
+
+	<property file="build/ant/properties/setup.properties"/>
+	<property file="build/ant/properties/applications.properties"/>
+	<property file="build/ant/properties/libraries.properties"/>
+	<property file="build/ant/properties/flex.properties"/>
+	<property file="build/ant/properties/project-setup.properties"/>
+	<property file="build/ant/properties/project-details.properties"/>
+	<property file="build/ant/properties/build-setup.properties"/>
+	<property file="build/ant/properties/html-wrapper.properties"/>
+	<property file="build/ant/properties/asdocs.properties"/>
+	<property file="build/ant/properties/compc.properties"/>
+	<property file="build/ant/properties/swf.properties"/>
+	
+</project>

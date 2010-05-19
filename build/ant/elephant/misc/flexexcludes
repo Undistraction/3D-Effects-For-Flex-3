@@ -1,0 +1,13 @@
+<project>
+
+	<!-- Externally linked Flex libraries -->
+	<compiler.external-library-path dir="${flex.sdk.frameworks}" append="true">
+		<include name="libs/player/playerglobal.swc"/>
+		<include name="libs/framework.swc" />
+		<include name="libs/rpc.swc" />
+		<include name="libs/flex.swc" />
+		<include name="locale/@{locale}/framework_rb.swc" />
+		<include name="locale/@locale}/rpc_rb.swc" />
+	</compiler.external-library-path>
+
+</project>
